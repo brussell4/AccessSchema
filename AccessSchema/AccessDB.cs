@@ -139,10 +139,20 @@ namespace AccessSchema
                             TableProcessStarted(this, new TableProcessStartedEventArgs(tableName));
 
                         var cols = con.GetSchema("COLUMNS", new string[] { null, null, tableName, null });
+                        string[] schemaRow = new string[cols.Rows.Count];
                         foreach (DataRow col in cols.Rows)
                         {
-                            file.WriteLine("\"" + mdbName + "\",\"" + col["TABLE_NAME"].ToString() + "\",\"" + col["COLUMN_NAME"].ToString() + "\",\"" + oleDbToNetTypeConverter((int)col["DATA_TYPE"]).ToString() + "\"," + col["CHARACTER_MAXIMUM_LENGTH"].ToString() + "," + col["ORDINAL_POSITION"].ToString());
+                            int ordinal = int.Parse(col["ORDINAL_POSITION"].ToString());
+                            string typeName = oleDbToNetTypeConverter((int)col["DATA_TYPE"]).ToString();
+                            string maxLength = col["CHARACTER_MAXIMUM_LENGTH"].ToString();
+                            if ("OleDbType.BSTR OleDbType.Char OleDbType.Guid OleDbType.LongVarChar OleDbType.LongVarWChar OleDbType.PropVariant OleDbType.VarWChar OleDbType.WChar".IndexOf(typeName, StringComparison.OrdinalIgnoreCase) == -1)
+                                maxLength = "";
+                            schemaRow[ordinal - 1] = "\"" + mdbName + "\",\"" + col["TABLE_NAME"].ToString() + "\",\"" + col["COLUMN_NAME"].ToString() + "\",\"" + typeName + "\"," + maxLength + "," + ordinal.ToString();
                         }
+
+                        // Deal with columns being listed in schema out of ordninal position
+                        for (int i = 0; i < schemaRow.Length; i++)
+                            file.WriteLine(schemaRow[i]);
                     }
                 }
             }

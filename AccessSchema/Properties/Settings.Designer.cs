@@ -25,7 +25,7 @@ namespace AccessSchema.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source={0};User Id=admin;Password=;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Persist Security Info=False;")]
         public string ConnectionStringTemplate {
             get {
                 return ((string)(this["ConnectionStringTemplate"]));
