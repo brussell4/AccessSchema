@@ -114,6 +114,8 @@ namespace AccessSchema
 
         public void DumpSchema()
         {
+            //DumpLinks();
+
             var mdbName = Path.GetFileName(Filename);
             string conenctionString = String.Format(Properties.Settings.Default.ConnectionStringTemplate, Filename);
 
@@ -200,6 +202,36 @@ namespace AccessSchema
                 case (int)OleDbType.WChar: return OleDbType.WChar;
             }
             throw (new Exception("DataType Not Supported"));
+        }
+
+        public void DumpLinks()
+        {
+            var mdbName = Path.GetFileName(Filename);
+            string conenctionString = String.Format(Properties.Settings.Default.ConnectionStringTemplate, Filename);
+
+            using (var con = new OleDbConnection(conenctionString))
+            {
+                con.Open();
+
+                List<string> tableNames = new List<string>();
+
+                var outputFile = Filename + ".links.txt";
+                if (File.Exists(outputFile))
+                    File.Delete(outputFile);
+
+                using (var file = new StreamWriter(outputFile))
+                {
+                    file.WriteLine("Database name, Table Name,Column name, Type, Length, Column Position");
+
+                    var tables = con.GetSchema("TABLES", new string[] { null, null, null, "PASS-THROUGH" });
+                    foreach (System.Data.DataRow row in tables.Rows)
+                    {
+                        tableNames.Add(row["TABLE_NAME"].ToString());
+                    }
+
+
+                }
+            }
         }
     }
 }
