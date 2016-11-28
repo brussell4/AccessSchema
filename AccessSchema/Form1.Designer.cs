@@ -41,6 +41,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.DelimiterTextBox = new System.Windows.Forms.TextBox();
             this.HeadersCheckBox = new System.Windows.Forms.CheckBox();
+            this.HtmlEncodeCheckBox = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtNewline = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.DataPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SchemaPicture)).BeginInit();
             this.SuspendLayout();
@@ -61,10 +64,10 @@
             this.databaseLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.databaseLabel.BackColor = System.Drawing.SystemColors.Control;
-            this.databaseLabel.Location = new System.Drawing.Point(12, 157);
+            this.databaseLabel.Location = new System.Drawing.Point(13, 207);
             this.databaseLabel.MinimumSize = new System.Drawing.Size(200, 0);
             this.databaseLabel.Name = "databaseLabel";
-            this.databaseLabel.Size = new System.Drawing.Size(322, 15);
+            this.databaseLabel.Size = new System.Drawing.Size(432, 15);
             this.databaseLabel.TabIndex = 7;
             // 
             // tableLabel
@@ -73,10 +76,10 @@
             this.tableLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLabel.BackColor = System.Drawing.SystemColors.Control;
-            this.tableLabel.Location = new System.Drawing.Point(12, 184);
+            this.tableLabel.Location = new System.Drawing.Point(12, 231);
             this.tableLabel.MinimumSize = new System.Drawing.Size(200, 0);
             this.tableLabel.Name = "tableLabel";
-            this.tableLabel.Size = new System.Drawing.Size(322, 15);
+            this.tableLabel.Size = new System.Drawing.Size(432, 15);
             this.tableLabel.TabIndex = 8;
             // 
             // DataPicture
@@ -89,6 +92,7 @@
             this.DataPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.DataPicture.TabIndex = 3;
             this.DataPicture.TabStop = false;
+            this.DataPicture.Click += new System.EventHandler(this.DataPicture_Click);
             this.DataPicture.DragDrop += new System.Windows.Forms.DragEventHandler(this.DataPicture_DragDrop);
             this.DataPicture.DragEnter += new System.Windows.Forms.DragEventHandler(this.DataPicture_DragEnter);
             // 
@@ -125,9 +129,9 @@
             // 
             // QuoteTextBox
             // 
-            this.QuoteTextBox.Location = new System.Drawing.Point(295, 80);
+            this.QuoteTextBox.Location = new System.Drawing.Point(367, 80);
             this.QuoteTextBox.Name = "QuoteTextBox";
-            this.QuoteTextBox.Size = new System.Drawing.Size(34, 20);
+            this.QuoteTextBox.Size = new System.Drawing.Size(69, 20);
             this.QuoteTextBox.TabIndex = 6;
             this.QuoteTextBox.Text = "\"";
             // 
@@ -151,9 +155,9 @@
             // 
             // DelimiterTextBox
             // 
-            this.DelimiterTextBox.Location = new System.Drawing.Point(295, 52);
+            this.DelimiterTextBox.Location = new System.Drawing.Point(367, 52);
             this.DelimiterTextBox.Name = "DelimiterTextBox";
-            this.DelimiterTextBox.Size = new System.Drawing.Size(34, 20);
+            this.DelimiterTextBox.Size = new System.Drawing.Size(69, 20);
             this.DelimiterTextBox.TabIndex = 4;
             this.DelimiterTextBox.Text = "[[";
             // 
@@ -164,17 +168,49 @@
             this.HeadersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.HeadersCheckBox.Location = new System.Drawing.Point(239, 106);
             this.HeadersCheckBox.Name = "HeadersCheckBox";
-            this.HeadersCheckBox.Size = new System.Drawing.Size(90, 18);
+            this.HeadersCheckBox.Size = new System.Drawing.Size(197, 18);
             this.HeadersCheckBox.TabIndex = 9;
             this.HeadersCheckBox.Text = "Headers";
             this.HeadersCheckBox.UseVisualStyleBackColor = true;
             this.HeadersCheckBox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // HtmlEncodeCheckBox
+            // 
+            this.HtmlEncodeCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.HtmlEncodeCheckBox.Checked = true;
+            this.HtmlEncodeCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.HtmlEncodeCheckBox.Location = new System.Drawing.Point(239, 130);
+            this.HtmlEncodeCheckBox.Name = "HtmlEncodeCheckBox";
+            this.HtmlEncodeCheckBox.Size = new System.Drawing.Size(197, 18);
+            this.HtmlEncodeCheckBox.TabIndex = 10;
+            this.HtmlEncodeCheckBox.Text = "HTML Encode Output";
+            this.HtmlEncodeCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(236, 154);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(102, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Convert Newlines to";
+            // 
+            // txtNewline
+            // 
+            this.txtNewline.Location = new System.Drawing.Point(367, 154);
+            this.txtNewline.Name = "txtNewline";
+            this.txtNewline.Size = new System.Drawing.Size(69, 20);
+            this.txtNewline.TabIndex = 12;
+            this.txtNewline.Text = "#newline#";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(346, 209);
+            this.ClientSize = new System.Drawing.Size(456, 255);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.txtNewline);
+            this.Controls.Add(this.HtmlEncodeCheckBox);
             this.Controls.Add(this.HeadersCheckBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.DelimiterTextBox);
@@ -211,6 +247,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox DelimiterTextBox;
         private System.Windows.Forms.CheckBox HeadersCheckBox;
+        private System.Windows.Forms.CheckBox HtmlEncodeCheckBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtNewline;
     }
 }
 

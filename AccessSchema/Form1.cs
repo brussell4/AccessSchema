@@ -39,8 +39,10 @@ namespace AccessSchema
                 databaseLabel.Refresh();
                 accDB.Delimiter = DelimiterTextBox.Text;
                 accDB.Quote = QuoteTextBox.Text;
+                accDB.HtmlEncodeData = HtmlEncodeCheckBox.Checked;
                 accDB.Headers = HeadersCheckBox.Checked;
-                accDB.DumpData();
+                accDB.NewlineReplacement = txtNewline.Text.Trim();
+                accDB.DumpData();                
                 tableLabel.Text = "Done";
             }
         }
@@ -89,6 +91,11 @@ namespace AccessSchema
         private void Form1_Load(object sender, EventArgs e)
         {
             Text = Application.ProductName + " " + Application.ProductVersion;
+        }
+
+        private void DataPicture_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

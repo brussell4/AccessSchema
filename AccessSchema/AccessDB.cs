@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Data;
 using System.IO;
 using System.Data.OleDb;
+using System.Net;
 
 namespace AccessSchema
 {
@@ -28,6 +29,8 @@ namespace AccessSchema
         public string Delimiter { get; set; }
         public string Quote { get; set; }
         public bool Headers { get; set; }
+        public bool HtmlEncodeData { get; set; }
+        public string NewlineReplacement { get; set; }
 
         private void DumpTable(StreamWriter w, DataTable t)
         {
@@ -65,7 +68,15 @@ namespace AccessSchema
                     if (i < t.Columns.Count - 1)
                         b.Append(Delimiter);
                 }
-                w.WriteLine(b.ToString());
+
+                string line = b.ToString();
+                if (NewlineReplacement != null && NewlineReplacement.Length > 0)
+                    line = line.Replace("\r\n", NewlineReplacement);
+
+                if (HtmlEncodeData)
+                    w.WriteLine(line); 
+                else
+                    w.WriteLine(line);
             }
         }
 
