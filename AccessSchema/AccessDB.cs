@@ -35,6 +35,7 @@ namespace AccessSchema
         private void DumpTable(StreamWriter w, DataTable t)
         {
             string[] values = new string[t.Columns.Count];
+            string value = "";
 
             if (Headers)
             {
@@ -58,7 +59,11 @@ namespace AccessSchema
 
                     if ("System.String".IndexOf(col.DataType.ToString(), StringComparison.OrdinalIgnoreCase) >= 0 && row[col.ColumnName] != DBNull.Value)
                     {
-                        values[col.Ordinal] = Quote + values[col.Ordinal] + Quote;
+                        if (HtmlEncodeData)
+                            value = WebUtility.HtmlEncode(values[col.Ordinal]);
+                        else
+                            value = values[col.Ordinal];
+                        values[col.Ordinal] = Quote + value + Quote;
                     }                    
                 }
                 StringBuilder b = new StringBuilder();
@@ -73,10 +78,7 @@ namespace AccessSchema
                 if (NewlineReplacement != null && NewlineReplacement.Length > 0)
                     line = line.Replace("\r\n", NewlineReplacement);
 
-                if (HtmlEncodeData)
-                    w.WriteLine(line); 
-                else
-                    w.WriteLine(line);
+                w.WriteLine(line);                
             }
         }
 

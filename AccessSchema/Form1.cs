@@ -41,7 +41,7 @@ namespace AccessSchema
                 accDB.Quote = QuoteTextBox.Text;
                 accDB.HtmlEncodeData = HtmlEncodeCheckBox.Checked;
                 accDB.Headers = HeadersCheckBox.Checked;
-                accDB.NewlineReplacement = txtNewline.Text.Trim();
+                accDB.NewlineReplacement = txtNewline.Text;
                 accDB.DumpData();                
                 tableLabel.Text = "Done";
             }

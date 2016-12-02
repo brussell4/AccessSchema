@@ -159,7 +159,7 @@
             this.DelimiterTextBox.Name = "DelimiterTextBox";
             this.DelimiterTextBox.Size = new System.Drawing.Size(69, 20);
             this.DelimiterTextBox.TabIndex = 4;
-            this.DelimiterTextBox.Text = "[[";
+            this.DelimiterTextBox.Text = ",";
             // 
             // HeadersCheckBox
             // 
@@ -177,13 +177,11 @@
             // HtmlEncodeCheckBox
             // 
             this.HtmlEncodeCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.HtmlEncodeCheckBox.Checked = true;
-            this.HtmlEncodeCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.HtmlEncodeCheckBox.Location = new System.Drawing.Point(239, 130);
             this.HtmlEncodeCheckBox.Name = "HtmlEncodeCheckBox";
             this.HtmlEncodeCheckBox.Size = new System.Drawing.Size(197, 18);
             this.HtmlEncodeCheckBox.TabIndex = 10;
-            this.HtmlEncodeCheckBox.Text = "HTML Encode Output";
+            this.HtmlEncodeCheckBox.Text = "HTML Encode Output ";
             this.HtmlEncodeCheckBox.UseVisualStyleBackColor = true;
             // 
             // label6
@@ -201,7 +199,7 @@
             this.txtNewline.Name = "txtNewline";
             this.txtNewline.Size = new System.Drawing.Size(69, 20);
             this.txtNewline.TabIndex = 12;
-            this.txtNewline.Text = "#newline#";
+            this.txtNewline.Text = "\\";
             // 
             // Form1
             // 
