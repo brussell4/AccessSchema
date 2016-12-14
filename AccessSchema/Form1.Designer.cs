@@ -44,6 +44,9 @@
             this.HtmlEncodeCheckBox = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txtNewline = new System.Windows.Forms.TextBox();
+            this.DateValidationCheckBox = new System.Windows.Forms.CheckBox();
+            this.DateFormatComboBox = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DataPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SchemaPicture)).BeginInit();
             this.SuspendLayout();
@@ -67,7 +70,7 @@
             this.databaseLabel.Location = new System.Drawing.Point(13, 207);
             this.databaseLabel.MinimumSize = new System.Drawing.Size(200, 0);
             this.databaseLabel.Name = "databaseLabel";
-            this.databaseLabel.Size = new System.Drawing.Size(432, 15);
+            this.databaseLabel.Size = new System.Drawing.Size(480, 15);
             this.databaseLabel.TabIndex = 7;
             // 
             // tableLabel
@@ -79,7 +82,7 @@
             this.tableLabel.Location = new System.Drawing.Point(12, 231);
             this.tableLabel.MinimumSize = new System.Drawing.Size(200, 0);
             this.tableLabel.Name = "tableLabel";
-            this.tableLabel.Size = new System.Drawing.Size(432, 15);
+            this.tableLabel.Size = new System.Drawing.Size(480, 15);
             this.tableLabel.TabIndex = 8;
             // 
             // DataPicture
@@ -129,11 +132,10 @@
             // 
             // QuoteTextBox
             // 
-            this.QuoteTextBox.Location = new System.Drawing.Point(367, 80);
+            this.QuoteTextBox.Location = new System.Drawing.Point(413, 80);
             this.QuoteTextBox.Name = "QuoteTextBox";
             this.QuoteTextBox.Size = new System.Drawing.Size(69, 20);
             this.QuoteTextBox.TabIndex = 6;
-            this.QuoteTextBox.Text = "\"";
             // 
             // label4
             // 
@@ -155,20 +157,18 @@
             // 
             // DelimiterTextBox
             // 
-            this.DelimiterTextBox.Location = new System.Drawing.Point(367, 52);
+            this.DelimiterTextBox.Location = new System.Drawing.Point(413, 52);
             this.DelimiterTextBox.Name = "DelimiterTextBox";
             this.DelimiterTextBox.Size = new System.Drawing.Size(69, 20);
             this.DelimiterTextBox.TabIndex = 4;
-            this.DelimiterTextBox.Text = ",";
+            this.DelimiterTextBox.Text = "[[";
             // 
             // HeadersCheckBox
             // 
             this.HeadersCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.HeadersCheckBox.Checked = true;
-            this.HeadersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.HeadersCheckBox.Location = new System.Drawing.Point(239, 106);
             this.HeadersCheckBox.Name = "HeadersCheckBox";
-            this.HeadersCheckBox.Size = new System.Drawing.Size(197, 18);
+            this.HeadersCheckBox.Size = new System.Drawing.Size(243, 18);
             this.HeadersCheckBox.TabIndex = 9;
             this.HeadersCheckBox.Text = "Headers";
             this.HeadersCheckBox.UseVisualStyleBackColor = true;
@@ -179,7 +179,7 @@
             this.HtmlEncodeCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.HtmlEncodeCheckBox.Location = new System.Drawing.Point(239, 130);
             this.HtmlEncodeCheckBox.Name = "HtmlEncodeCheckBox";
-            this.HtmlEncodeCheckBox.Size = new System.Drawing.Size(197, 18);
+            this.HtmlEncodeCheckBox.Size = new System.Drawing.Size(243, 18);
             this.HtmlEncodeCheckBox.TabIndex = 10;
             this.HtmlEncodeCheckBox.Text = "HTML Encode Output ";
             this.HtmlEncodeCheckBox.UseVisualStyleBackColor = true;
@@ -195,17 +195,54 @@
             // 
             // txtNewline
             // 
-            this.txtNewline.Location = new System.Drawing.Point(367, 154);
+            this.txtNewline.Location = new System.Drawing.Point(413, 154);
             this.txtNewline.Name = "txtNewline";
             this.txtNewline.Size = new System.Drawing.Size(69, 20);
             this.txtNewline.TabIndex = 12;
             this.txtNewline.Text = "\\";
             // 
+            // DateValidationCheckBox
+            // 
+            this.DateValidationCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.DateValidationCheckBox.Checked = true;
+            this.DateValidationCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DateValidationCheckBox.Location = new System.Drawing.Point(239, 186);
+            this.DateValidationCheckBox.Name = "DateValidationCheckBox";
+            this.DateValidationCheckBox.Size = new System.Drawing.Size(243, 18);
+            this.DateValidationCheckBox.TabIndex = 13;
+            this.DateValidationCheckBox.Text = "Date Validation";
+            this.DateValidationCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // DateFormatComboBox
+            // 
+            this.DateFormatComboBox.FormattingEnabled = true;
+            this.DateFormatComboBox.Items.AddRange(new object[] {
+            "",
+            "MM/dd/yyyy",
+            "dd/MM/yyyy",
+            "yyyy-MM-dd"});
+            this.DateFormatComboBox.Location = new System.Drawing.Point(361, 210);
+            this.DateFormatComboBox.Name = "DateFormatComboBox";
+            this.DateFormatComboBox.Size = new System.Drawing.Size(121, 21);
+            this.DateFormatComboBox.TabIndex = 14;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(236, 209);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(103, 13);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "Date format override";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(456, 255);
+            this.ClientSize = new System.Drawing.Size(504, 312);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.DateFormatComboBox);
+            this.Controls.Add(this.DateValidationCheckBox);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtNewline);
             this.Controls.Add(this.HtmlEncodeCheckBox);
@@ -248,6 +285,9 @@
         private System.Windows.Forms.CheckBox HtmlEncodeCheckBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtNewline;
+        private System.Windows.Forms.CheckBox DateValidationCheckBox;
+        private System.Windows.Forms.ComboBox DateFormatComboBox;
+        private System.Windows.Forms.Label label7;
     }
 }
 

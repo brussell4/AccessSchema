@@ -31,11 +31,20 @@ namespace AccessSchema
         public bool Headers { get; set; }
         public bool HtmlEncodeData { get; set; }
         public string NewlineReplacement { get; set; }
+        public bool ValidateDates { get; set; }
+        public string DateFormatOverride { get; set; }
 
-        private void DumpTable(StreamWriter w, DataTable t)
+        /// <summary>
+        /// Dumps out data from tables. NB does so in ordinal order, which may not be the column order as read by C# here
+        /// Does this by transferring values into an array indexed by col.Ordinal
+        /// </summary>
+        /// <param name="w"></param>
+        /// <param name="t"></param>
+        private void DumpTable(StreamWriter w, StreamWriter errors, DataTable t)
         {
             string[] values = new string[t.Columns.Count];
             string value = "";
+            DateTime sqlMinDate = new DateTime(1753, 1, 1);
 
             if (Headers)
             {
@@ -47,25 +56,78 @@ namespace AccessSchema
                     else
                         w.WriteLine("");
                 }
-            }
-
+            }            
             foreach (DataRow row in t.Rows)
             {
+                var rowErrors = new StringBuilder();
+
                 foreach (DataColumn col in t.Columns)
                 {
+                    // Set the value in the output array based on column ordinal
                     values[col.Ordinal] = row[col.ColumnName].ToString();
-                    if (row[col.ColumnName] == DBNull.Value)
-                        Debug.WriteLine("null");
 
-                    if ("System.String".IndexOf(col.DataType.ToString(), StringComparison.OrdinalIgnoreCase) >= 0 && row[col.ColumnName] != DBNull.Value)
+                    // Overwrite out of range dates with minimum date from SQL Server
+                    if (col.DataType == System.Type.GetType("System.DateTime") && values[col.Ordinal].Length > 0)
                     {
+                        if (ValidateDates)
+                        {
+                            DateTime dateValue = DateTime.Parse(values[col.Ordinal]);
+                            // January 1, 1753, through December 31, 9999                            
+                            if (dateValue < sqlMinDate || dateValue > new DateTime(9999, 12, 31))
+                            {
+                                rowErrors.Append(values[col.Ordinal] + " changed to ");
+                                values[col.Ordinal] = sqlMinDate.ToShortDateString();
+                                rowErrors.Append(values[col.Ordinal]);
+                                rowErrors.Append("\r\n");
+                            }
+                        }
+
+                        if (DateFormatOverride.Length > 0)
+                        {
+                            DateTime dateValue = DateTime.Parse(values[col.Ordinal]);
+                            values[col.Ordinal] = dateValue.ToString(DateFormatOverride);
+                        }
+                    }
+
+                    // If it's a string field that has "Date" in the name, also validate it as a date
+                    if (ValidateDates && col.DataType == System.Type.GetType("System.String") && 
+                        col.ColumnName.IndexOf("date", StringComparison.OrdinalIgnoreCase) >= 0 && 
+                        values[col.Ordinal].Trim().Length > 0)
+                    {
+                        // January 1, 1753, through December 31, 9999    
+                        DateTime dateValue;
+                        if (!DateTime.TryParse(values[col.Ordinal], out dateValue))
+                        {
+                            rowErrors.Append(values[col.Ordinal]);
+                            rowErrors.Append("\r\n");
+                            values[col.Ordinal] = values[col.Ordinal] + " #BAD#";                            
+                        }
+                        else if (dateValue < new DateTime(1753, 1, 1) || dateValue > new DateTime(9999, 12, 31))
+                        {
+                            rowErrors.Append(values[col.Ordinal]);
+                            rowErrors.Append("\r\n");
+                            values[col.Ordinal] = values[col.Ordinal] + " #BAD#";                            
+                        }
+                    }
+
+                    if (col.DataType == System.Type.GetType("System.String") && row[col.ColumnName] != DBNull.Value)
+                    {
+                        // If the column is string, HTML code the value if needed
                         if (HtmlEncodeData)
                             value = WebUtility.HtmlEncode(values[col.Ordinal]);
                         else
                             value = values[col.Ordinal];
+
+                        // Look for the quote in the data and replace with space as a defence
+                        if (Quote.Length > 0 && value.Contains(Quote))
+                            value = value.Replace(Quote, " ");
+
+                        // Quote the string value if needed
                         values[col.Ordinal] = Quote + value + Quote;
-                    }                    
+                    }
                 }
+
+                // Build a CSV row for output from the values array
                 StringBuilder b = new StringBuilder();
                 for (int i = 0; i < t.Columns.Count; i++)
                 {
@@ -78,12 +140,18 @@ namespace AccessSchema
                 if (NewlineReplacement != null && NewlineReplacement.Length > 0)
                     line = line.Replace("\r\n", NewlineReplacement);
 
-                w.WriteLine(line);                
+                w.WriteLine(line);
+                if (rowErrors.Length > 0)
+                {
+                    errors.WriteLine(line);
+                    errors.WriteLine(rowErrors.ToString());
+                }
             }
         }
 
         public void DumpData()
         {
+
             string datafolder = Filename + ".Export";
             if (!Directory.Exists(datafolder))
             {
@@ -93,9 +161,7 @@ namespace AccessSchema
 
             using (var con = new OleDbConnection(conenctionString))
             {
-
                 con.Open();
-
                 List<string> tableNames = new List<string>();
 
                 var tables = con.GetSchema("TABLES", new string[] { null, null, null, "TABLE" });
@@ -110,13 +176,22 @@ namespace AccessSchema
                     var table = new DataTable();
                     adapter.Fill(table);
                     var outputFile = datafolder + "\\" + tableName + ".txt";
+                    var errorFile = datafolder + "\\" + tableName + ".log";
                     if (table.Rows.Count > 0)
                     {
                         if (File.Exists(outputFile))
                             File.Delete(outputFile);
+
                         using (var file = new StreamWriter(outputFile))
                         {
-                            DumpTable(file, table);
+                            bool emptyFile = false;
+                            using (var errors = new StreamWriter(errorFile))
+                            {
+                                DumpTable(file, errors, table);
+                                emptyFile = (errors.BaseStream.Position == 0);
+                            }
+                            if (emptyFile)
+                                File.Delete(errorFile);
                         }
                     }
 

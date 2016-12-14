@@ -42,6 +42,8 @@ namespace AccessSchema
                 accDB.HtmlEncodeData = HtmlEncodeCheckBox.Checked;
                 accDB.Headers = HeadersCheckBox.Checked;
                 accDB.NewlineReplacement = txtNewline.Text;
+                accDB.ValidateDates = DateValidationCheckBox.Checked;
+                accDB.DateFormatOverride = DateFormatComboBox.Text.Trim();
                 accDB.DumpData();                
                 tableLabel.Text = "Done";
             }
