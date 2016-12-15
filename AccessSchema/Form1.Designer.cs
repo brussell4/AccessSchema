@@ -225,6 +225,7 @@
             this.DateFormatComboBox.Name = "DateFormatComboBox";
             this.DateFormatComboBox.Size = new System.Drawing.Size(121, 21);
             this.DateFormatComboBox.TabIndex = 14;
+            this.DateFormatComboBox.Text = "MM/dd/yyyy";
             // 
             // label7
             // 
